@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: cargopulse-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cargopulse
+    ports:
+      - "5432:5432"
+    volumes:
+      - cargopulse_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d cargopulse"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+  api:
+    build: ./apps/api
+    container_name: cargopulse-api
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/cargopulse?schema=public
+      PORT: 3000
+      CORS_ORIGIN: http://localhost:5173
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build: ./apps/web
+    container_name: cargopulse-web
+    environment:
+      VITE_API_URL: http://localhost:3000/api
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+
+volumes:
+  cargopulse_data:
