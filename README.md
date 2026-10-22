@@ -1,5 +1,10 @@
 # CargoPulse — Plataforma de Visibilidade Logística
-**Projeto de portfólio | React + TypeScript + NestJS + Prisma + PostgreSQL + Docker**
+
+**Projeto de portfólio full stack** com React, TypeScript, NestJS, Prisma, PostgreSQL e Docker.
+
+- **Aplicação publicada:** https://cargopulse.lucianoferreiradev.com
+- **Health check da API:** https://cargopulse.lucianoferreiradev.com/api/health
+- **Repositório:** https://github.com/LucianoSF1992/cargopulse-logistics-platform
 
 [Português brasileiro](#português-brasileiro) · [English](#english)
 
@@ -7,103 +12,92 @@
 
 # Português brasileiro
 
-## 1. Visão geral
+## Sobre o projeto
 
-O **CargoPulse** é um projeto demonstrativo de uma plataforma de visibilidade logística. Ele reúne em um painel os principais indicadores de entregas, permite pesquisar e filtrar remessas e oferece uma API REST para consultar e atualizar o status de cada operação.
+CargoPulse é uma aplicação demonstrativa de visibilidade logística. Apresenta indicadores operacionais, lista e filtros de remessas e eventos de rastreamento, com uma API REST e persistência em PostgreSQL.
 
-O projeto foi pensado para demonstrar competências relevantes para uma vaga Full Stack Júnior: construção de interfaces com React e TypeScript, desenvolvimento de API com Node.js/NestJS, persistência relacional com PostgreSQL e Prisma, testes automatizados, containerização e pipeline de CI.
+O projeto utiliza **dados fictícios para demonstração** e não representa operações logísticas reais.
 
-> **Importante:** este é um projeto de portfólio com dados fictícios. Não representa um produto ou uma integração oficial da LocusLog, nem deve ser apresentado como experiência profissional em produção.
+## Funcionalidades
 
-## 2. Funcionalidades
-
-- Dashboard com indicadores de remessas, entregas em trânsito, entregas concluídas e ocorrências.
-- Lista de remessas com pesquisa por código, destinatário ou cidade.
+- Dashboard com indicadores de remessas, entregas em trânsito, entregas concluídas e itens que precisam de atenção.
+- Pesquisa de remessas por código, destinatário ou cidade.
 - Filtros por status e prioridade.
-- Visualização detalhada de cada remessa, incluindo origem, destino, previsão e eventos de rastreamento.
-- API REST documentada com Swagger.
+- Consulta de detalhes e eventos de rastreamento.
+- API REST com documentação Swagger.
 - Validação de entrada com DTOs.
-- Persistência em PostgreSQL usando Prisma ORM.
-- Seed com dados de demonstração.
-- Testes unitários do serviço de remessas.
-- Docker Compose para subir API e banco localmente.
-- GitHub Actions para executar lint, testes e build da API.
+- Persistência de dados com Prisma ORM e PostgreSQL.
+- Dados iniciais de demonstração.
+- Testes automatizados configurados no backend.
+- Ambiente conteinerizado com Docker Compose e workflow de CI com GitHub Actions.
 
-## 3. Stack tecnológica
+## Tecnologias
 
-| Camada | Tecnologia |
+| Camada | Tecnologias |
 |---|---|
-| Front-end | React, TypeScript, Vite |
-| Estilo | CSS responsivo, sem biblioteca visual obrigatória |
-| Back-end | Node.js, NestJS |
+| Frontend | React, TypeScript, Vite |
+| Backend | Node.js, NestJS |
 | API | REST, Swagger/OpenAPI |
 | Banco de dados | PostgreSQL |
 | ORM | Prisma |
-| Qualidade | Jest, ESLint, Prettier |
-| Infraestrutura local | Docker, Docker Compose |
+| Testes e qualidade | Jest, ESLint, Prettier |
+| Containers | Docker, Docker Compose |
 | CI | GitHub Actions |
+| Publicação | VPS Linux, Nginx e HTTPS com Let's Encrypt |
 
-## 4. Arquitetura
+## Arquitetura
 
 ```text
-cargopulse/
+cargopulse-logistics-platform/
 ├── apps/
-│   ├── api/                 # NestJS + Prisma + PostgreSQL
-│   └── web/                 # React + TypeScript + Vite
-├── docker-compose.yml
-├── .github/workflows/ci.yml
+│   ├── api/                 # NestJS, Prisma e acesso ao PostgreSQL
+│   └── web/                 # React, TypeScript e Vite
+├── .github/workflows/       # Workflow de CI
+├── docker-compose.yml       # Ambiente de desenvolvimento
 └── README.md
 ```
 
-O front-end consome a API por HTTP. A API concentra validações e regras de negócio, enquanto o Prisma faz o acesso tipado ao PostgreSQL. O banco pode ser iniciado localmente com Docker Compose.
+O frontend consome a API REST. O backend concentra os endpoints e as regras da aplicação, e o Prisma acessa o PostgreSQL.
 
-## 5. Requisitos
+## Acessar a aplicação publicada
 
-- Node.js 20 ou superior
-- npm 10 ou superior
-- Docker Desktop (recomendado) ou PostgreSQL local
-- Git
+- **Aplicação:** https://cargopulse.lucianoferreiradev.com
+- **Health check:** https://cargopulse.lucianoferreiradev.com/api/health
+- **Remessas:** https://cargopulse.lucianoferreiradev.com/api/shipments
+- **Swagger:** https://cargopulse.lucianoferreiradev.com/docs
 
-## 6. Executar com Docker
+A aplicação está publicada no subdomínio do meu portfólio, usando Docker Compose para executar frontend, API e banco de dados, e Nginx como proxy reverso com HTTPS. O PostgreSQL não tem sua porta publicada diretamente na internet.
 
-Na raiz do projeto:
+## Executar localmente com Docker
 
-```bash
-docker compose up --build
-```
+Pré-requisitos: Git, Docker e Docker Compose.
 
-Serviços:
-- Front-end: http://localhost:5173
-- API: http://localhost:3000/api
-- Swagger: http://localhost:3000/docs
-- PostgreSQL: `localhost:5432`
+1. Clone o repositório e entre na pasta:
 
-O Compose inicia o PostgreSQL e a API. O front-end é executado em container para facilitar a avaliação.
+   ```bash
+   git clone https://github.com/LucianoSF1992/cargopulse-logistics-platform.git
+   cd cargopulse-logistics-platform
+   ```
 
-### Primeiro uso e banco de dados
+2. Inicie o ambiente de desenvolvimento:
 
-O container da API aplica as migrations e executa o seed ao iniciar. Se você preferir executar os comandos manualmente:
+   ```bash
+   docker compose up --build
+   ```
 
-```bash
-cd apps/api
-npm install
-npx prisma generate
-npx prisma migrate dev --name init
-npm run prisma:seed
-npm run start:dev
-```
+3. Acesse os serviços locais:
 
-Em outro terminal:
+   - Frontend: http://localhost:5173
+   - API: http://localhost:3000/api
+   - Health check: http://localhost:3000/api/health
+   - Swagger: http://localhost:3000/docs
+   - PostgreSQL: `localhost:5432` (conforme configuração do Compose)
 
-```bash
-cd apps/web
-npm install
-npm run dev
-```
+> O arquivo `docker-compose.yml` é destinado ao desenvolvimento local. A configuração de produção utilizada no VPS é separada e não deve ser confundida com o Compose local.
 
-## 7. Variáveis de ambiente
+## Variáveis de ambiente
 
-O arquivo `.env.example` contém os valores de desenvolvimento. Para execução local, copie-o para `.env` dentro de `apps/api`.
+Configure as variáveis esperadas pelo backend conforme o arquivo `.env.example` e a configuração local:
 
 ```env
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/cargopulse?schema=public"
@@ -111,44 +105,30 @@ PORT=3000
 CORS_ORIGIN="http://localhost:5173"
 ```
 
-No Docker Compose, a API usa o hostname `db` para acessar o banco dentro da rede Docker.
+Dentro da rede Docker, a API usa o hostname `db` para acessar o PostgreSQL. Nunca publique senhas, chaves ou arquivos de ambiente com segredos no repositório.
 
-## 8. Endpoints principais
+## Endpoints principais
 
-Base URL: `http://localhost:3000/api`
+A URL base local é `http://localhost:3000/api`; em produção, é `https://cargopulse.lucianoferreiradev.com/api`.
 
 | Método | Endpoint | Descrição |
 |---|---|---|
-| GET | `/health` | Verifica a saúde da API |
-| GET | `/shipments` | Lista remessas; aceita `search`, `status` e `priority` |
-| GET | `/shipments/:id` | Consulta uma remessa e seus eventos |
-| POST | `/shipments` | Cria uma remessa |
-| PATCH | `/shipments/:id/status` | Atualiza o status de uma remessa |
-| GET | `/dashboard/summary` | Retorna os indicadores do dashboard |
+| `GET` | `/health` | Verifica a saúde da API |
+| `GET` | `/shipments` | Lista remessas; aceita filtros de pesquisa, status e prioridade |
+| `GET` | `/shipments/:id` | Consulta uma remessa e seus eventos |
+| `POST` | `/shipments` | Cria uma remessa |
+| `PATCH` | `/shipments/:id/status` | Atualiza o status de uma remessa |
+| `GET` | `/dashboard/summary` | Retorna indicadores do dashboard |
 
 A documentação interativa está disponível em `/docs`.
 
-### Exemplo de criação
+Status disponíveis: `PENDING`, `IN_TRANSIT`, `DELIVERED`, `DELAYED`, `EXCEPTION`.
 
-```json
-{
-  "trackingCode": "CP-2026-1001",
-  "recipient": "Mariana Costa",
-  "originCity": "Vitória",
-  "destinationCity": "Belo Horizonte",
-  "status": "IN_TRANSIT",
-  "priority": "STANDARD",
-  "estimatedDelivery": "2026-10-18T15:00:00.000Z"
-}
-```
+Prioridades disponíveis: `STANDARD`, `EXPRESS`, `URGENT`.
 
-Status aceitos: `PENDING`, `IN_TRANSIT`, `DELIVERED`, `DELAYED`, `EXCEPTION`.
+## Testes e build
 
-Prioridades: `STANDARD`, `EXPRESS`, `URGENT`.
-
-## 9. Testes e qualidade
-
-Na pasta `apps/api`:
+Na pasta `apps/api`, conforme os scripts definidos no `package.json`:
 
 ```bash
 npm install
@@ -166,136 +146,110 @@ npm run build
 npm run lint
 ```
 
-O workflow de CI em `.github/workflows/ci.yml` instala dependências e executa verificações de qualidade da API. Ajuste o pipeline conforme as regras e scripts que você mantiver no repositório.
+Alguns comandos dependem dos scripts e das dependências disponíveis na versão atual do projeto.
 
-## 10. Próximas evoluções sugeridas
+## Próximas melhorias
 
-1. Autenticação e autorização com JWT e perfis de usuário.
-2. Paginação e ordenação server-side.
-3. Integração com provedor de mapas (por exemplo, Mapbox ou Google Maps) usando chave própria.
-4. Webhooks para atualização automática de eventos.
-5. Notificações de atraso por e-mail.
-6. Testes e2e com banco de teste.
-7. Observabilidade com logs estruturados e métricas.
-8. Deploy com ambiente de staging e secrets gerenciados.
+- Autenticação e autorização.
+- Paginação e ordenação no backend.
+- Testes end-to-end com banco de teste.
+- Logs estruturados, métricas e monitoramento.
+- Rotina de backup do banco de dados.
 
-## 11. Como apresentar no GitHub, LinkedIn e portfólio
+## Licença
 
-- Publique o repositório com um nome como `cargopulse-logistics-platform`.
-- Adicione capturas de tela reais depois de executar o projeto.
-- Atualize os links e confirme que a instalação funciona em uma máquina limpa.
-- No LinkedIn, descreva o que foi construído e as tecnologias utilizadas, sem afirmar uso por clientes reais.
-- Fixe o repositório no GitHub e adicione-o à seção Projetos do seu portfólio.
-
-### Sugestão de descrição curta
-
-> CargoPulse é uma plataforma demonstrativa de visibilidade logística construída com React, TypeScript, NestJS, Prisma e PostgreSQL. Inclui dashboard operacional, filtros de remessas, API REST documentada, dados de demonstração, testes e ambiente Docker.
-
-## 12. Licença
-
-Licenciado sob MIT. Consulte `LICENSE`.
+Licença MIT. Consulte o arquivo `LICENSE`.
 
 ---
 
 # English
 
-## 1. Overview
+## About
 
-**CargoPulse** is a portfolio project that demonstrates a logistics visibility platform. It brings delivery KPIs into a dashboard, lets users search and filter shipments, and provides a REST API to retrieve shipments and update their operational status.
+CargoPulse is a portfolio project that demonstrates a logistics visibility application. It provides operational KPIs, shipment search and filters, tracking events, and a REST API backed by PostgreSQL.
 
-It was designed to showcase skills relevant to a Junior Full Stack Developer role: React and TypeScript UI development, Node.js/NestJS API development, relational data persistence with PostgreSQL and Prisma, automated testing, containerization, and CI.
+The application uses **fictional demonstration data** and does not represent real logistics operations.
 
-> **Important:** this is a portfolio project using fictional data. It is not an official LocusLog product or integration, and it should not be presented as production work experience.
+## Features
 
-## 2. Features
-
-- Dashboard with shipment, in-transit, delivered, and exception KPIs.
-- Shipment table with search by tracking code, recipient, or city.
+- Dashboard for shipment, in-transit, delivered, and attention-needed metrics.
+- Shipment search by tracking code, recipient, or city.
 - Status and priority filters.
-- Shipment details including origin, destination, ETA, and tracking events.
+- Shipment details and tracking events.
 - REST API documented with Swagger.
-- Request validation through DTOs.
-- PostgreSQL persistence using Prisma ORM.
-- Seed data for local demonstrations.
-- Unit tests for the shipment service.
-- Docker Compose for local API and database startup.
-- GitHub Actions workflow for API linting, tests, and build checks.
+- Request validation using DTOs.
+- PostgreSQL persistence through Prisma ORM.
+- Seed data for demonstration.
+- Automated backend tests configured in the project.
+- Docker Compose environment and GitHub Actions CI workflow.
 
-## 3. Technology stack
+## Technology stack
 
-| Layer | Technology |
+| Layer | Technologies |
 |---|---|
-| Front end | React, TypeScript, Vite |
-| Styling | Responsive CSS |
-| Back end | Node.js, NestJS |
+| Frontend | React, TypeScript, Vite |
+| Backend | Node.js, NestJS |
 | API | REST, Swagger/OpenAPI |
 | Database | PostgreSQL |
 | ORM | Prisma |
-| Quality | Jest, ESLint, Prettier |
-| Local infrastructure | Docker, Docker Compose |
+| Testing and quality | Jest, ESLint, Prettier |
+| Containers | Docker, Docker Compose |
 | CI | GitHub Actions |
+| Deployment | Linux VPS, Nginx, HTTPS with Let's Encrypt |
 
-## 4. Architecture
+## Architecture
 
 ```text
-cargopulse/
+cargopulse-logistics-platform/
 ├── apps/
-│   ├── api/                 # NestJS + Prisma + PostgreSQL
-│   └── web/                 # React + TypeScript + Vite
-├── docker-compose.yml
-├── .github/workflows/ci.yml
+│   ├── api/                 # NestJS, Prisma, PostgreSQL access
+│   └── web/                 # React, TypeScript, Vite
+├── .github/workflows/       # CI workflow
+├── docker-compose.yml       # Development environment
 └── README.md
 ```
 
-The front end communicates with the API over HTTP. The API owns validation and business rules, while Prisma provides typed access to PostgreSQL. Docker Compose can start the local environment.
+The frontend consumes the REST API. The backend exposes the application endpoints, and Prisma provides database access to PostgreSQL.
 
-## 5. Requirements
+## Live deployment
 
-- Node.js 20 or newer
-- npm 10 or newer
-- Docker Desktop (recommended) or a local PostgreSQL instance
-- Git
+- **Application:** https://cargopulse.lucianoferreiradev.com
+- **API health check:** https://cargopulse.lucianoferreiradev.com/api/health
+- **Shipments endpoint:** https://cargopulse.lucianoferreiradev.com/api/shipments
+- **Swagger:** https://cargopulse.lucianoferreiradev.com/docs
 
-## 6. Run with Docker
+The application is deployed on a subdomain of my portfolio. Docker Compose runs the frontend, API, and database; Nginx acts as a reverse proxy with HTTPS. The PostgreSQL port is not exposed directly to the public internet.
 
-From the project root:
+## Run locally with Docker
 
-```bash
-docker compose up --build
-```
+Prerequisites: Git, Docker, and Docker Compose.
 
-Services:
-- Front end: http://localhost:5173
-- API: http://localhost:3000/api
-- Swagger: http://localhost:3000/docs
-- PostgreSQL: `localhost:5432`
+1. Clone the repository:
 
-Docker Compose starts PostgreSQL and the API. The web app is also containerized for easier evaluation.
+   ```bash
+   git clone https://github.com/LucianoSF1992/cargopulse-logistics-platform.git
+   cd cargopulse-logistics-platform
+   ```
 
-### First run and database setup
+2. Start the development environment:
 
-The API container applies migrations and runs the seed on startup. To run the commands manually instead:
+   ```bash
+   docker compose up --build
+   ```
 
-```bash
-cd apps/api
-npm install
-npx prisma generate
-npx prisma migrate dev --name init
-npm run prisma:seed
-npm run start:dev
-```
+3. Open the local services:
 
-In a separate terminal:
+   - Frontend: http://localhost:5173
+   - API: http://localhost:3000/api
+   - Health check: http://localhost:3000/api/health
+   - Swagger: http://localhost:3000/docs
+   - PostgreSQL: `localhost:5432` (depending on the Compose configuration)
 
-```bash
-cd apps/web
-npm install
-npm run dev
-```
+> `docker-compose.yml` is intended for local development. The VPS uses a separate production Compose file.
 
-## 7. Environment variables
+## Environment variables
 
-The `.env.example` file contains development defaults. For local execution, copy it to `.env` inside `apps/api`.
+Configure the backend variables using `.env.example` and the local setup:
 
 ```env
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/cargopulse?schema=public"
@@ -303,44 +257,30 @@ PORT=3000
 CORS_ORIGIN="http://localhost:5173"
 ```
 
-In Docker Compose, the API uses the `db` hostname to connect to PostgreSQL over the Docker network.
+Inside the Docker network, the API uses the `db` hostname to connect to PostgreSQL. Never commit passwords, keys, or environment files containing secrets.
 
-## 8. Main endpoints
+## Main endpoints
 
-Base URL: `http://localhost:3000/api`
+Local base URL: `http://localhost:3000/api`. Production base URL: `https://cargopulse.lucianoferreiradev.com/api`.
 
 | Method | Endpoint | Description |
 |---|---|---|
-| GET | `/health` | API health check |
-| GET | `/shipments` | Lists shipments; supports `search`, `status`, and `priority` |
-| GET | `/shipments/:id` | Retrieves a shipment and its events |
-| POST | `/shipments` | Creates a shipment |
-| PATCH | `/shipments/:id/status` | Updates shipment status |
-| GET | `/dashboard/summary` | Returns dashboard KPIs |
+| `GET` | `/health` | API health check |
+| `GET` | `/shipments` | Lists shipments; supports search, status, and priority filters |
+| `GET` | `/shipments/:id` | Retrieves a shipment and its tracking events |
+| `POST` | `/shipments` | Creates a shipment |
+| `PATCH` | `/shipments/:id/status` | Updates a shipment status |
+| `GET` | `/dashboard/summary` | Returns dashboard metrics |
 
 Interactive API documentation is available at `/docs`.
 
-### Create shipment example
+Available statuses: `PENDING`, `IN_TRANSIT`, `DELIVERED`, `DELAYED`, `EXCEPTION`.
 
-```json
-{
-  "trackingCode": "CP-2026-1001",
-  "recipient": "Mariana Costa",
-  "originCity": "Vitoria",
-  "destinationCity": "Belo Horizonte",
-  "status": "IN_TRANSIT",
-  "priority": "STANDARD",
-  "estimatedDelivery": "2026-10-18T15:00:00.000Z"
-}
-```
+Available priorities: `STANDARD`, `EXPRESS`, `URGENT`.
 
-Statuses: `PENDING`, `IN_TRANSIT`, `DELIVERED`, `DELAYED`, `EXCEPTION`.
+## Tests and build
 
-Priorities: `STANDARD`, `EXPRESS`, `URGENT`.
-
-## 9. Testing and quality
-
-Inside `apps/api`:
+Inside `apps/api`, according to the scripts defined in `package.json`:
 
 ```bash
 npm install
@@ -358,31 +298,16 @@ npm run build
 npm run lint
 ```
 
-The workflow in `.github/workflows/ci.yml` installs dependencies and runs API quality checks. Keep the workflow aligned with the scripts and rules in your repository.
+Some commands depend on the scripts and dependencies available in the current project version.
 
-## 10. Suggested next steps
+## Potential improvements
 
-1. Add JWT authentication and role-based access.
-2. Add server-side pagination and sorting.
-3. Integrate a map provider (such as Mapbox or Google Maps) using your own API key.
-4. Add webhooks for automatic tracking events.
-5. Send delay notifications by email.
-6. Add end-to-end tests with a dedicated test database.
-7. Add structured logs and metrics.
-8. Deploy to staging and production with managed secrets.
+- Authentication and authorization.
+- Backend pagination and sorting.
+- End-to-end tests with a test database.
+- Structured logs, metrics, and monitoring.
+- Database backup routine.
 
-## 11. Publishing checklist
+## License
 
-- Publish the repository as `cargopulse-logistics-platform` or a similar name.
-- Add genuine screenshots after running the application.
-- Verify installation from a clean environment.
-- Describe the project accurately on LinkedIn; do not claim real customers or production usage.
-- Pin the repository on GitHub and add it to your portfolio projects.
-
-### Short description
-
-> CargoPulse is a demo logistics visibility platform built with React, TypeScript, NestJS, Prisma, and PostgreSQL. It includes an operational dashboard, shipment filters, a documented REST API, seed data, tests, and a Docker-based development environment.
-
-## 12. License
-
-Released under the MIT License. See `LICENSE`.
+MIT License. See `LICENSE`.
